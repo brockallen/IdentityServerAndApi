@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Processing callback...</h1>
+        </header>
+
+        <div class="row">
+            <div class="col-md-2">
+                <a href="index.html" class="btn btn-primary">Back to index</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="lib/oidc-client.js"></script>
+    <script>
+        var mgr = new Oidc.UserManager({ loadUserInfo: true, filterProtocolClaims: true });
+        mgr.signinRedirectCallback().then(function (user) {
+            console.log(user);
+            window.history.replaceState({},
+                window.document.title,
+                window.location.origin + window.location.pathname);
+            window.location = "index.html";
+        });
+    </script>
+</body>
+</html>
+

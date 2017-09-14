@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        pre:empty {
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>JavaScript Oidc Client</h1>
+        </header>
+
+        <div class="row">
+            <ul class="list-unstyled list-inline">
+                <li><a class="btn btn-primary" href="index.html">Home</a></li>
+                <li><button class="btn btn-default request" data-scope='openid' data-type='id_token'>Login Only</button></li>
+                <li><button class="btn btn-default request" data-scope='openid profile email' data-type='id_token'>Profile</button></li>
+                <li><button class="btn btn-default request" data-scope='openid profile email api1' data-type='id_token token'>Profile and API Access</button></li>
+                <li><button class="btn btn-default request" data-scope='api1' data-type='token'>API Access Only</button></li>
+                <li><button class="btn btn-primary call">Call Service</button></li>
+                <li><button class="btn btn-info revoke">Revoke Access Token</button></li>
+                <li><button class="btn btn-info logout">Logout</button></li>
+            </ul>
+        </div>
+
+        <div class="row">
+            <ul class="list-unstyled list-inline">
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">Message</div>
+                <div class="panel-body">
+                    <pre id="response"></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Current User</div>
+                    <div class="panel-body">
+                        <pre id="id-token"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Access Token</div>
+                    <div class="panel-body">
+                        <pre id="access-token"></pre>
+                    </div>
+                </div>
+            </div>-->
+
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Ajax Result</div>
+                    <div class="panel-body">
+                        <pre id="ajax-result"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="lib/oidc-client.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
