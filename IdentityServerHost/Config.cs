@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer4;
 using IdentityServer4.Models;
 
 namespace IdentityServerHost
@@ -13,15 +14,17 @@ namespace IdentityServerHost
             new Client
             {
                 ClientId = "spa",
-                AllowedGrantTypes = GrantTypes.Implicit,
-                AllowAccessTokensViaBrowser = true,
+                AllowedGrantTypes = GrantTypes.Code,
+                RequireClientSecret = false,
+                RequirePkce = true,
+                RequireConsent = false,
                 RedirectUris = {
                     "http://localhost:5000/callback.html",
                     "http://localhost:5000/popup.html",
                     "http://localhost:5000/silent.html"
                 },
                 PostLogoutRedirectUris = { "http://localhost:5000/index.html" },
-                AllowedScopes = { "openid", "profile", "email", "api1" },
+                AllowedScopes = { "openid", "profile", "email", IdentityServerConstants.LocalApi.ScopeName },
                 AllowedCorsOrigins = { "http://localhost:5000" }
             },
         };
@@ -35,7 +38,8 @@ namespace IdentityServerHost
 
         public static IEnumerable<ApiResource> Apis = new List<ApiResource>
         {
-            new ApiResource("api1", "My API 1")
+            // local API
+            new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
         };
     }
 }

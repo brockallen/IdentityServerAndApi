@@ -6,14 +6,10 @@ var config = {
     redirect_uri: window.location.origin + "/callback.html",
     post_logout_redirect_uri: window.location.origin + "/index.html",
 
-    // if we choose to use popup window instead for logins
-    popup_redirect_uri: window.location.origin + "/popup.html",
-    popupWindowFeatures: "menubar=yes,location=yes,toolbar=yes,width=1200,height=800,left=100,top=100;resizable=yes",
-
     // these two will be done dynamically from the buttons clicked, but are
     // needed if you want to use the silent_renew
-    response_type: "id_token token",
-    scope: "openid profile email api1",
+    response_type: "code",
+    scope: "openid profile email IdentityServerApi",
 
     // this will toggle if profile endpoint is used
     loadUserInfo: true,
@@ -21,14 +17,7 @@ var config = {
     // silent renew will get a new access_token via an iframe 
     // just prior to the old access_token expiring (60 seconds prior)
     silent_redirect_uri: window.location.origin + "/silent.html",
-    automaticSilentRenew: true,
-
-    // will revoke (reference) access tokens at logout time
-    revokeAccessTokenOnSignout: true,
-
-    // this will allow all the OIDC protocol claims to be visible in the window. normally a client app 
-    // wouldn't care about them or want them taking up space
-    filterProtocolClaims: false
+    automaticSilentRenew: true
 };
 Oidc.Log.logger = window.console;
 Oidc.Log.level = Oidc.Log.INFO;
@@ -53,24 +42,12 @@ mgr.events.addUserSignedOut(function () {
     log("User signed out of OP");
 });
 
-function login(scope, response_type) {
-    var use_popup = false;
-    if (!use_popup) {
-        mgr.signinRedirect({ scope: scope, response_type: response_type });
-    }
-    else {
-        mgr.signinPopup({ scope: scope, response_type: response_type }).then(function () {
-            log("Logged In");
-        });
-    }
+function login() {
+    mgr.signinRedirect();
 }
 
 function logout() {
     mgr.signoutRedirect();
-}
-
-function revoke() {
-    mgr.revokeAccessToken();
 }
 
 function callApi() {
@@ -98,14 +75,8 @@ if (window.location.hash) {
     handleCallback();
 }
 
-[].forEach.call(document.querySelectorAll(".request"), function (button) {
-    button.addEventListener("click", function () {
-        login(this.dataset["scope"], this.dataset["type"]);
-    });
-});
-
+document.querySelector(".login").addEventListener("click", login, false);
 document.querySelector(".call").addEventListener("click", callApi, false);
-document.querySelector(".revoke").addEventListener("click", revoke, false);
 document.querySelector(".logout").addEventListener("click", logout, false);
 
 

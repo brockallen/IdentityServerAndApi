@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityServer4.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,13 +29,7 @@ namespace IdentityServerHost
                 .AddInMemoryApiResources(Config.Apis)
                 .AddTestUsers(TestUsers.Users);
 
-            services.AddAuthentication()
-               .AddJwtBearer(jwt =>
-               {
-                   jwt.Authority = "http://localhost:5000";
-                   jwt.RequireHttpsMetadata = false;
-                   jwt.Audience = "api1";
-               });
+            services.AddLocalApiAuthentication();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
